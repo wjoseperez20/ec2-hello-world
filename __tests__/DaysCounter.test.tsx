@@ -16,33 +16,31 @@ afterAll(() => {
   jest.useRealTimers();
 });
 
+// useSyncExternalStore returns the client snapshot immediately in jsdom,
+// so no `await act()` is needed for the initial rendered value.
 describe("DaysCounter", () => {
   it('renders the "Together for" label', () => {
     render(<DaysCounter />);
     expect(screen.getByText(/together for/i)).toBeInTheDocument();
   });
 
-  it("renders the computed day count after effects run", async () => {
+  it("renders the computed day count", () => {
     render(<DaysCounter />);
-    await act(async () => {});
     expect(screen.getByText(String(EXPECTED_DAYS))).toBeInTheDocument();
   });
 
-  it('renders "days" label after effects run', async () => {
+  it('renders "days" label', () => {
     render(<DaysCounter />);
-    await act(async () => {});
     expect(screen.getByText(/^days$/i)).toBeInTheDocument();
   });
 
-  it('renders the "Since November 21, 2024" label', async () => {
+  it('renders the "Since November 21, 2024" label', () => {
     render(<DaysCounter />);
-    await act(async () => {});
     expect(screen.getByText(/since november 21, 2024/i)).toBeInTheDocument();
   });
 
-  it("increments the count after one day elapses", async () => {
+  it("increments the count after one day elapses", () => {
     render(<DaysCounter />);
-    await act(async () => {});
     expect(screen.getByText(String(EXPECTED_DAYS))).toBeInTheDocument();
     act(() => {
       jest.advanceTimersByTime(1000 * 60 * 60 * 24);

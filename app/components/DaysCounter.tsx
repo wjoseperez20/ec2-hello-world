@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { calcDays } from "@/lib/date-utils";
 
-export default function DaysCounter() {
-  const [days, setDays] = useState<number | null>(null);
+// Notify React when the minute interval fires so it re-reads the snapshot
+function subscribe(onStoreChange: () => void): () => void {
+  const id = setInterval(onStoreChange, 60_000);
+  return () => clearInterval(id);
+}
 
-  useEffect(() => {
-    setDays(calcDays());
-    const id = setInterval(() => setDays(calcDays()), 60_000);
-    return () => clearInterval(id);
-  }, []);
+export default function DaysCounter() {
+  const days = useSyncExternalStore(
+    subscribe,
+    calcDays,   // client snapshot — runs in the browser
+    () => null  // server snapshot — avoids hydration mismatch
+  );
 
   return (
     <div className="flex flex-col items-center gap-2">

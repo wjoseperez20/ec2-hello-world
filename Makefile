@@ -7,6 +7,10 @@
         infra-install infra-synth infra-diff infra-deploy infra-destroy \
         ssh help
 
+# ── Dependencies ─────────────────────────────────────────────────────────────
+install:      ## Install dependencies (used by CI)
+	npm ci
+
 # ── Local development ─────────────────────────────────────────────────────────
 dev:          ## Start the Next.js dev server at http://localhost:3000
 	npm run dev
@@ -23,6 +27,9 @@ lint:         ## Run ESLint across the codebase
 # ── Testing ───────────────────────────────────────────────────────────────────
 test:         ## Run all unit tests once
 	npm test
+
+test-ci:      ## Run tests in CI mode (non-interactive, used by GitHub Actions)
+	npm test -- --ci
 
 test-watch:   ## Run tests in watch mode (re-runs on file save)
 	npm test -- --watch

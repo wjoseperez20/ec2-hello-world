@@ -1,20 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import Home from "@/app/page";
 
-// next/image relies on Next.js build pipeline — replace with a plain <img>
-// Destructure `fill` out so it isn't forwarded as a non-boolean DOM attribute
+// next/image relies on the Next.js build pipeline — replace with a plain <img>.
+// `fill` is a Next.js-only boolean prop that is invalid on <img>, so we drop it.
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: ({
-    fill: _fill,
-    sizes: _sizes,
-    ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement> & {
-    fill?: boolean;
-    sizes?: string;
-  }) => {
+  default: function MockImage(
+    props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean }
+  ) {
+    const imgProps = Object.assign({}, props);
+    delete imgProps.fill;
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-    return <img {...props} />;
+    return <img {...imgProps} />;
   },
 }));
 
@@ -39,16 +36,12 @@ describe("Home page", () => {
 
   it('renders the "Our Story" section heading', () => {
     render(<Home />);
-    expect(
-      screen.getByRole("heading", { name: /our story/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /our story/i })).toBeInTheDocument();
   });
 
   it('renders the "Our Memories" section heading', () => {
     render(<Home />);
-    expect(
-      screen.getByRole("heading", { name: /our memories/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /our memories/i })).toBeInTheDocument();
   });
 
   it("renders all 5 timeline memory titles", () => {
