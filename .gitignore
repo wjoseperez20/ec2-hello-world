@@ -39,3 +39,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ide
+.idea/
+
+# infrastructure
+infra/dist/
+infra/cdk.out/
+infra/node_modules/
+
+# test coverage
+coverage/
+
+# pm2
+.pm2/
+
+# logs
+logs/
+*.log

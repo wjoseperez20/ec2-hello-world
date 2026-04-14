@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-const START_DATE = new Date("2024-11-21T00:00:00");
-
-function calcDays(): number {
-  const now = new Date();
-  const ms = now.getTime() - START_DATE.getTime();
-  return Math.floor(ms / (1000 * 60 * 60 * 24));
-}
+import { calcDays } from "@/lib/date-utils";
 
 export default function DaysCounter() {
   const [days, setDays] = useState<number | null>(null);
