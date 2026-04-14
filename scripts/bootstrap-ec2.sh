@@ -40,7 +40,7 @@ sudo -u "${APP_USER}" bash <<USERSCRIPT
   export NVM_DIR="\$HOME/.nvm"
   source "\$NVM_DIR/nvm.sh"
   cd "${APP_DIR}"
-  npm ci --omit=dev
+  npm ci
   npm run build
   pm2 start ecosystem.config.js --env production
   pm2 save
