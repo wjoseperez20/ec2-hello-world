@@ -53,8 +53,8 @@ jobs:
 
             cd ~/ec2-hello-world
             git pull origin main
-            npm ci
-            npm run build
+            NODE_OPTIONS=--max-old-space-size=512 npm ci
+            NODE_OPTIONS=--max-old-space-size=512 npm run build
 
             pm2 restart ecosystem.config.js --env production \
               || pm2 start ecosystem.config.js --env production

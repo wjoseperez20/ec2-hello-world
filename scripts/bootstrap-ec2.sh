@@ -9,6 +9,15 @@ APP_DIR="/home/${APP_USER}/ec2-hello-world"
 REPO_URL="https://github.com/wjoseperez20/ec2-hello-world"
 NODE_VERSION="24"
 
+# ── Swap file (1 GB) — prevents OOM during npm install on t3.micro ────────────
+if [ ! -f /swapfile ]; then
+  fallocate -l 1G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+
 # ── System packages ───────────────────────────────────────────────────────────
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
@@ -40,8 +49,8 @@ sudo -u "${APP_USER}" bash <<USERSCRIPT
   export NVM_DIR="\$HOME/.nvm"
   source "\$NVM_DIR/nvm.sh"
   cd "${APP_DIR}"
-  npm ci
-  npm run build
+  NODE_OPTIONS=--max-old-space-size=512 npm ci
+  NODE_OPTIONS=--max-old-space-size=512 npm run build
   pm2 start ecosystem.config.js --env production
   pm2 save
 USERSCRIPT
