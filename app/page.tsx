@@ -1,65 +1,217 @@
 import Image from "next/image";
+import DaysCounter from "@/app/components/DaysCounter";
+
+// ── Photos — drop files into public/photos/ then list them here ───────────────
+const PHOTOS = [
+  "photo1.jpg",
+  "photo2.jpg",
+  "photo3.jpg",
+  "photo4.jpg",
+  "photo5.jpg",
+  "photo6.jpg",
+];
+
+const MEMORIES = [
+  {
+    date: "November 21, 2024",
+    emoji: "💌",
+    title: "The Beginning",
+    description:
+      "The day everything changed. The day I realised you were the person I had been looking for.",
+  },
+  {
+    date: "December 2024",
+    emoji: "🎄",
+    title: "First Holiday Season Together",
+    description:
+      "Warm lights, warm hands, and the warmest heart. Our first Christmas felt like magic.",
+  },
+  {
+    date: "February 14, 2025",
+    emoji: "🌹",
+    title: "First Valentine's Day",
+    description:
+      "You make every day feel like Valentine's, but this one was extra special.",
+  },
+  {
+    date: "A random Tuesday",
+    emoji: "☕",
+    title: "The Everyday Moments",
+    description:
+      "Morning coffee, lazy afternoons, little laughs — the ordinary days that become the best memories.",
+  },
+  {
+    date: "Coming soon…",
+    emoji: "✈️",
+    title: "Adventures Ahead",
+    description:
+      "So many places to explore together. Every destination is perfect when you are beside me.",
+  },
+];
+
+// Deterministic seeds so SSR and client render identical markup
+const HEARTS = [
+  { id: 1,  left: "5%",  size: "1.4rem", delay: "0s",   duration: "12s" },
+  { id: 2,  left: "12%", size: "1rem",   delay: "2s",   duration: "15s" },
+  { id: 3,  left: "22%", size: "1.8rem", delay: "5s",   duration: "10s" },
+  { id: 4,  left: "30%", size: "1.1rem", delay: "1s",   duration: "14s" },
+  { id: 5,  left: "40%", size: "2rem",   delay: "7s",   duration: "11s" },
+  { id: 6,  left: "50%", size: "1.3rem", delay: "3s",   duration: "16s" },
+  { id: 7,  left: "60%", size: "1.6rem", delay: "9s",   duration: "13s" },
+  { id: 8,  left: "70%", size: "1rem",   delay: "4s",   duration: "18s" },
+  { id: 9,  left: "78%", size: "1.9rem", delay: "6s",   duration: "9s"  },
+  { id: 10, left: "88%", size: "1.2rem", delay: "11s",  duration: "14s" },
+  { id: 11, left: "94%", size: "1.5rem", delay: "0.5s", duration: "17s" },
+  { id: 12, left: "18%", size: "0.9rem", delay: "13s",  duration: "12s" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div
+      className="relative min-h-screen overflow-x-hidden"
+      style={{
+        background:
+          "linear-gradient(135deg, #1a0010 0%, #3d0024 30%, #7f1d3f 60%, #be185d 100%)",
+      }}
+    >
+      {/* Floating hearts */}
+      {HEARTS.map((h) => (
+        <span
+          key={h.id}
+          className="heart"
+          style={{
+            left: h.left,
+            fontSize: h.size,
+            animationDelay: h.delay,
+            animationDuration: h.duration,
+            color: "#fb7185",
+          }}
+          aria-hidden="true"
+        >
+          ♥
+        </span>
+      ))}
+
+      {/* ── Hero ───────────────────────────────────────────────────────────── */}
+      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
+        <div className="fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <p className="text-rose-300 text-sm tracking-[0.4em] uppercase mb-6 font-light">
+            A love letter
+          </p>
+          <h1
+            className="shimmer-text font-bold leading-tight mb-6"
+            style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}
+          >
+            To the Love of My Life
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-rose-100 text-lg md:text-xl font-light max-w-xl mx-auto leading-relaxed mb-16">
+            Every moment with you is a gift I never knew I needed.
+            You are my favourite person, my safe place, my greatest joy.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="fade-in-up" style={{ animationDelay: "0.4s" }}>
+          <DaysCounter />
         </div>
-      </main>
+
+        <div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-rose-300 text-2xl"
+          aria-hidden="true"
+        >
+          ↓
+        </div>
+      </section>
+
+      {/* ── Timeline ───────────────────────────────────────────────────────── */}
+      <section className="relative z-10 px-6 py-24 max-w-3xl mx-auto">
+        <h2 className="shimmer-text text-4xl md:text-5xl font-bold text-center mb-16">
+          Our Story
+        </h2>
+
+        <div className="relative">
+          <div
+            className="absolute left-6 top-0 bottom-0 w-px"
+            style={{
+              background:
+                "linear-gradient(to bottom, transparent, #fb7185, transparent)",
+            }}
+          />
+
+          <ul className="flex flex-col gap-12 pl-16">
+            {MEMORIES.map((m, i) => (
+              <li
+                key={i}
+                className="fade-in-up relative"
+                style={{ animationDelay: `${0.1 * i}s` }}
+              >
+                <span className="absolute -left-[2.75rem] top-1 w-4 h-4 rounded-full bg-rose-400 border-2 border-rose-200 shadow-lg" />
+                <p className="text-rose-300 text-xs tracking-widest uppercase font-light mb-1">
+                  {m.date}
+                </p>
+                <h3 className="text-white text-xl font-semibold mb-2">
+                  {m.emoji} {m.title}
+                </h3>
+                <p className="text-rose-100 text-base font-light leading-relaxed">
+                  {m.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── Photo Gallery ──────────────────────────────────────────────────── */}
+      <section className="relative z-10 px-6 py-24">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="shimmer-text text-4xl md:text-5xl font-bold text-center mb-4">
+            Our Memories
+          </h2>
+          <p className="text-rose-300 text-center text-sm font-light mb-16 tracking-wide">
+            Drop your photos into{" "}
+            <code className="bg-white/10 px-2 py-0.5 rounded text-rose-200">
+              public/photos/
+            </code>{" "}
+            to fill this gallery
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {PHOTOS.map((filename) => (
+              <div
+                key={filename}
+                className="relative rounded-2xl overflow-hidden shadow-xl border border-rose-500/20"
+                style={{ aspectRatio: "1 / 1" }}
+              >
+                <Image
+                  src={`/photos/${filename}`}
+                  alt={`Our memory`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Quote ──────────────────────────────────────────────────────────── */}
+      <section className="relative z-10 px-6 py-32 text-center max-w-2xl mx-auto">
+        <p className="text-rose-200 text-2xl md:text-3xl font-light leading-relaxed italic mb-10">
+          &ldquo;In all the world, there is no heart for me like yours.
+          In all the world, there is no love for you like mine.&rdquo;
+        </p>
+        <p className="text-rose-400 text-sm tracking-widest uppercase font-light">
+          — Maya Angelou
+        </p>
+        <div className="mt-16 text-6xl animate-pulse" style={{ color: "#fb7185" }}>
+          ♥
+        </div>
+      </section>
+
+      {/* ── Footer ─────────────────────────────────────────────────────────── */}
+      <footer className="relative z-10 text-center py-8 text-rose-400 text-xs font-light tracking-widest border-t border-rose-900/40">
+        Made with ♥ · Since November 21, 2024
+      </footer>
     </div>
   );
 }
